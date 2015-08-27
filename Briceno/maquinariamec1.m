@@ -13,6 +13,8 @@ theta1=deg2rad(165);
 theta2=deg2rad(17);
 for theta=theta1:-0.1:theta2
 
+%initial guess
+x0=deg2rad([180;120]);
   
 syms x1 x2
 %ecuacion a resolver
@@ -27,8 +29,7 @@ d=diff(f2,x2);
 J=[a b;c d];
 %inversa del jacobiano sin ser evaluada 
 invJ=J^-1;
-%initial guess
-x0=deg2rad([180;120]);
+
 MAXITER=10;
 tol=1E-5;
 iter=0;
