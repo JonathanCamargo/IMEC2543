@@ -5,13 +5,13 @@ r1=25;
 r2=200;
 r3=100;
 r4=200;
-tetha=0;
 
 x=sym('x');
 y=sym('y');
+theta=sym('theta');
 
-fx = symfun(r1*cos(tetha)+r2*cos(x)+r3*cos(y)-r4,[x,y]);
-fy = symfun (r1*sin(tetha)+r2*sin(x)+r3*sin(y),[x,y]);
+fx = symfun(r1*cos(theta)+r2*cos(x)+r3*cos(y)-r4,[theta,x,y]);
+fy = symfun (r1*sin(theta)+r2*sin(x)+r3*sin(y),[theta,x,y]);
 
 e=0.01;
 t=1;
@@ -19,7 +19,7 @@ x0=[0.123123;pi*5/3];
 x1=[pi;pi];
 
 j1(x,y)=(jacobian([fx,fy],[x,y]));
-vf(x,y)=[fx(x,y);fy(x,y)];
+vf(x,y)=[fx(theta,x,y);fy(theta,x,y)];
 
 a(x,y)=inv(j1(x,y))*vf(x,y);
 
@@ -29,32 +29,33 @@ a(x,y)=inv(j1(x,y))*vf(x,y);
 marcadores = {'k+-','bo-','g*-','yx-','rs-','k^-','bv-','g>-','y<-','r.-','ks-','bd-','g^-','y>-','r<-','kp-'};
 
 
-for tetha = 1.5
+for theta_ = 0:0.1:2*pi
     
     while t>e
-    
-        temp=subs(a,{x,y},{x0(1),x0(2)});
-        c=double(subs(a,{x,y},{x0(1),x0(2)}));
         
+        temp=subs(a,{x,y,theta},{x0(1),x0(2),theta_});
+        c=double(subs(a,{x,y,theta},{x0(1),x0(2),theta_}));
+                
         j=transpose(c);
         x1=x0-j;
         t=abs(norm(x1-x0)/norm(x1));
-        x0
-        x1
+        x0;
+        x1;
         x0=x1; 
     end
+   t=e*1.1; %Este fue el error más grave porque cuando pasas a otro theta la tolerancia ya quedó bien entonces nunca vuelve a entrar al while.
     
    x0
     
    x1=0;
-   x2=r1*cos(tetha);
+   x2=r1*cos(theta_);
    x3=x2+r2*cos(x0(1));
    x4=x3+r3*cos(x0(2));
    %x4
    
    y1=0;
-   y2=r1*sin(tetha);
-   y3=r1*sin(tetha)+r2*sin(x0(1));
+   y2=r1*sin(theta_);
+   y3=r1*sin(theta_)+r2*sin(x0(1));
    y4=y3+r3*sin(x0(2));
    %y4=0;
     
